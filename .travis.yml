@@ -7,6 +7,9 @@ go:
   - "1.11"
   - "1.12"
 
+install:
+  - go mod download
+
 script:
   - make
   - make build.image
