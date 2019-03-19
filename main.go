@@ -35,6 +35,46 @@ func main() {
 	}
 }
 
+func (s *server) healthz() http.HandlerFunc {
+	return func(resp http.ResponseWriter, req *http.Request) {
+		resp.Header().Set("content-type", "text/plain")
+
+		if _, err := resp.Write([]byte("OK")); err != nil {
+			fmt.Println(err)
+		}
+	}
+}
+
+func (s *server) putEntry() http.HandlerFunc {
+	return nil
+}
+
+func (s *server) getEntry() http.HandlerFunc {
+	return nil
+}
+
+func (s *server) getMap() http.HandlerFunc {
+	return nil
+}
+
+func (s *server) deleteEntry() http.HandlerFunc {
+	return nil
+}
+
+func (s *server) installRoutes() {
+	s.router.Get("/healthz", s.healthz())
+
+	s.router.Route("/maps/{mapName}", func(r chi.Router) {
+		r.Get("/", s.getMap())
+		r.Post("/", s.putEntry())
+		r.Route("/{key}", func(r chi.Router) {
+			r.Get("/", s.getEntry())
+			r.Put("/", s.putEntry())
+			r.Delete("/", s.deleteEntry())
+		})
+	})
+}
+
 func checkPort(port string) error {
 	p, err := strconv.Atoi(port)
 	if err != nil {

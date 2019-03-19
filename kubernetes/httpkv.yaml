@@ -1,0 +1,37 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpkv
+spec:
+  type: ClusterIP
+  ports:
+    - name: api
+      port: 5000
+      targetPort: api
+  selector:
+    app: httpkv
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpkv
+  labels:
+    app: httpkv
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: httpkv
+  template:
+    metadata:
+      labels:
+        app: httpkv
+    spec:
+      containers:
+        - name: server
+          image: quay.io/plombardi89/httpkv
+          ports:
+            - name: api
+              containerPort: 5000
