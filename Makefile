@@ -16,9 +16,10 @@ build:
 
 build.image:
 	docker build \
-        -t quay.io/plombardi89/httpkv:$(GIT_COMMIT) \
 	-t plombardi89/httpkv \
 	-t plombardi89/httpkv:$(GIT_COMMIT) \
+	-t quay.io/plombardi89/httpkv \
+	-t quay.io/plombardi89/httpkv:$(GIT_COMMIT) \
 	-f Dockerfile \
 	.
 
